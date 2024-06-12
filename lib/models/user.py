@@ -141,3 +141,14 @@ class User:
         """
         rows = CURSOR.execute(sql, (name,)).fetchall()
         return [cls.instance_from_db(row) for row in rows]
+    def find_by_id(user_id):
+        
+        sql = "SELECT * FROM user WHERE id = ?"
+        row = CURSOR.execute(sql, (user_id,)).fetchone()
+        
+        CONN.commit()
+        
+        if row:
+            return User(*row)
+        else:
+            return None

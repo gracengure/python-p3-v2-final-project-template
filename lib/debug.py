@@ -56,6 +56,7 @@ def reset_database():
     
     User.drop_table() 
     User.create_table()
+    
     User.create("John Doe", "john@gmail.com",  789675434)
     User.create("Jane Smith", "jane@gmail.com", 9876543210)
     User.create("Ivy Kerubo", "sokoro@gmail.com", 7654321098)
@@ -64,7 +65,16 @@ def reset_database():
     User.create("Eliza Kangeo", "lizzy@gmail.com", 1098765432)
     User.create("Vincent Kimeli", "vinnie@gmail.com", 8765432109)
     User.create("Kelvin Biwott", "kevo@gmail.com", 6543210987)
-    User.create("Ashley Kyalo", "bazu@gmail.com", 4321098765)  
+    User.create("Ashley Kyalo", "bazu@gmail.com", 4321098765)
+    User.create("Charity Wanjiku", "chae@gmail.com",  3672781890)
+    User.create("Grace Ngure", "gracie@gmail.com", 3467258934)
+    User.create("Daniel Mbachu", "danteh@gmail.com", 4536728921)
+    User.create("Kelvin Mbachu", "mwana@gmail.com", 5467438291)
+    User.create("Annah Kirui", "bobo@gmail.com", 4567329810)
+    User.create("Patrick Kinyanjui", "pato@gmail.com", 1537428193)
+    User.create("Princess Mumbi", "cutie@gmail.com", 6547839201)
+    User.create("Eric  Kimani", "erico@gmail.com", 7834650231)
+    User.create("Samuel  Mwangi", "sam@gmail.com", 1436728193)    
 
     
 

@@ -179,6 +179,7 @@ class Phone:
             WHERE brand = ?
         """
 
+
         rows = CURSOR.execute(sql, (brand,)).fetchall()
         return [cls.instance_from_db(row) for row in rows]
     @classmethod
