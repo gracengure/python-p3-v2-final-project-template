@@ -14,6 +14,7 @@ from helpers import (
     update_order,
     delete_order,
     list_phone_orders,
+    list_user_orders,
     display_users,
     display_user_by_name,
     create_user,
@@ -64,10 +65,10 @@ def phone_menu():
         print("3. Display phone by price")
         print("4. Create phone")
         print("5. Update phone")
-        print("5. Delete phone")
-        print("6. Return to main menu")
-        print("7. Go to Order Management")
-        print("8. Go to User Management")
+        print("6. Delete phone")
+        print("7. Return to main menu")
+        print("8. Go to Order Management")
+        print("9. Go to User Management")
         
         choice = input("Enter your choice: ")
 
@@ -102,9 +103,10 @@ def order_menu():
         print("5. Update order")
         print("6. Delete order")
         print("7. List  all orders of a phone")
-        print("8. Return to main menu")
-        print("9. Go to Phone Management")
-        print("10. Go to User Management")
+        print("8. List  all orders of a user")
+        print("9. Return to main menu")
+        print("10.Go to Phone Management")
+        print("11.Go to User Management")
         
         choice = input("Enter your choice: ")
 
@@ -123,12 +125,14 @@ def order_menu():
         elif choice == "6":
             delete_order()
         elif choice == "7":
-            list_phone_orders()    
+            list_phone_orders() 
         elif choice == "8":
-            return "main"
+            list_user_orders()       
         elif choice == "9":
-            return "phone"
+            return "main"
         elif choice == "10":
+            return "phone"
+        elif choice == "11":
             return "user"
         else:
             print("Invalid choice. Please try again.")

@@ -1,4 +1,6 @@
 from models.__init__ import CURSOR, CONN
+from models.phone import Phone
+from models.user import User
 class Order:
 
     # Dictionary of objects saved to the database.
@@ -24,10 +26,10 @@ class Order:
 
     @phone_id.setter
     def phone_id(self, phone_id):
-        if isinstance(phone_id, int) and phone_id > 0:
+        if isinstance(phone_id, int) and Phone.find_by_id(phone_id):
             self._phone_id = phone_id
         else:
-            raise ValueError("Phone ID must be a positive integer")
+            raise ValueError("phone_id must reference a phone in the database")
 
     @property
     def quantity(self):
@@ -62,13 +64,15 @@ class Order:
     @property
     def user_id(self):
         return self._user_id
-
+    
     @user_id.setter
     def user_id(self, user_id):
-        if isinstance(user_id, int) and user_id > 0:
+        if isinstance(user_id, int) and User.find_by_id(user_id):
             self._user_id = user_id
         else:
-            raise ValueError("User ID must be a positive integer")
+            raise ValueError("user_id must reference a user in the database")
+
+    
 
     @classmethod
     def create_table(cls):
@@ -113,7 +117,7 @@ class Order:
         """Update the table row corresponding to the current Order instance"""
         sql = """
             UPDATE orders
-            SET phone_id = ?, quantity = ?, order_date = ?, status = ?, user_id = ?
+            SET phone_id = ?, quant8ity = ?, order_date = ?, status = ?, user_id = ?
             WHERE id = ?
         """
         CURSOR.execute(sql, (self.phone_id, self.quantity, self.order_date, self.status, self.user_id, self.id))
@@ -198,3 +202,11 @@ class Order:
         """
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
+    def user(self):
+        """Return the user associated with this order"""
+        from models.user import User  # Assuming User class exists
+        return User.find_by_id(self.user_id)
+    def phone(self):
+        """Return the user associated with this order"""
+        from models.phone import Phone  # Assuming User class exists
+        return Phone.find_by_id(self.phone_id)

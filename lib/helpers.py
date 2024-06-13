@@ -185,18 +185,44 @@ def delete_order():
 
 def list_phone_orders():
     phone_id = int(input("Enter Phone ID: "))
+    
     phone = Phone.find_by_id(phone_id)
     
     if phone:
         orders = phone.orders()
         if orders:
-            print(f"Orders for phone {phone.brand} {phone.model}:")
+            print(f"Orders for phone: {phone.brand} {phone.model} ")
             for order in orders:
-                print(order)
+                user = order.user()
+                if user:
+                    print(f"User: {user.name}")
+                    print(f"Order Details: {order}")
+                else:
+                    print(f"User with ID {order.user_id} not found.")
         else:
             print(f"No orders found for phone {phone.brand} {phone.model}.")
     else:
         print(f"Phone with ID {phone_id} not found.")
+def list_user_orders():
+    user_id = int(input("Enter User ID: "))
+    user= User.find_by_id(user_id)
+    
+    if user:
+        orders = user.orders()
+        if orders:
+            print(f"Orders for user :{user.name} {user.email}")
+            for order in orders:
+                phone = order.phone()
+                if phone:
+                    print(f"Phone: {phone.brand} {phone.model}")
+                    print(f"Order Details: {order}")
+                else:
+                    print(f"Phone with ID {order.phone_id} not found.")
+        else:
+            print(f"No orders found for user: {user.name} {user.email}")
+    else:
+        print(f"User with ID {user_id} not found.")
+
 
 def display_users():
     # Fetch all orders from the database
