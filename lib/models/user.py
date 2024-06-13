@@ -141,14 +141,13 @@ class User:
         """
         rows = CURSOR.execute(sql, (name,)).fetchall()
         return [cls.instance_from_db(row) for row in rows]
-    def find_by_id(user_id):
-        
-        sql = "SELECT * FROM user WHERE id = ?"
-        row = CURSOR.execute(sql, (user_id,)).fetchone()
-        
-        CONN.commit()
-        
-        if row:
-            return User(*row)
-        else:
-            return None
+    @classmethod
+    def find_by_id(cls, id):
+        """Return an Phone3 object corresponding to the table row matching the specified primary key"""
+        sql = """
+            SELECT *
+            FROM users
+            WHERE id = ?
+        """
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None

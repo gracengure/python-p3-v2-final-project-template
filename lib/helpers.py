@@ -59,6 +59,28 @@ def create_phone():
         print(f'Success: Phone {phone.brand} {phone.model} added with price {phone.price} and stock {phone.stock}')
     except Exception as exc:
         print("Error creating phone:", exc)
+def update_phone():
+    id_ = int(input("Enter Phone's ID: "))
+    if phone := Phone.find_by_id(id_):
+        try:
+            brand = input("Enter the Phone's Brand: ")
+            phone.brand = brand
+            model = input("Enter the Phone's Model: ")
+            phone.model = model
+            price = float(input("Enter the Phone's Price:"))
+            if price < 0:
+                raise ValueError("Price must be a non-negative number")
+            phone.price = price
+            stock = int(input("Enter the Phone's Stock: "))
+            phone.stock = stock
+            phone.update()
+
+            print(f"Phone successfully updated: {phone}")
+        except Exception as exc:
+            print("Error Updating Phone", exc)
+    else:
+        print(f"Phone with Phone ID: {id_} not found")
+
 
 def delete_phone(): 
     id_ = input("Enter the phone's id: ")
@@ -123,10 +145,34 @@ def create_order():
     order_date = input("Enter the order's order_date (YYYY-MM-DD): ")
 
     try:
-        order = Order.create(phone_id, user_id, quantity, status, order_date)
+        # phone_id, quantity, order_date, status, user_id
+        order = Order.create(phone_id,  quantity,  order_date, status, user_id)
         print(f'Success: Order {order}')
     except Exception as exc:
         print("Error creating order: ", exc)
+
+def update_order():
+    id_ = int(input("Enter Order's ID: "))
+    if order := Order.find_by_id(id_):
+        try:
+            phone_id = int(input("Enter the Phone ID for the Order: "))
+            order.phone_id = phone_id
+            quantity = int(input("Enter the Quantity: "))
+            order.quantity = quantity
+            order_date = input("Enter the Order Date (YYYY-MM-DD): ")
+            order.order_date = order_date
+            status = input("Enter the Order Status: ")
+            order.status = status
+            user_id = int(input("Enter the User ID: "))
+            order.user_id = user_id
+            order.update()
+
+            print(f"Order successfully updated: {order}")
+        except Exception as exc:
+            print("Error Updating Order", exc)
+    else:
+        print(f"Order with Order ID: {id_} not found")
+
 
 def delete_order(): 
     id_ = input("Enter the order's id: ")
@@ -138,27 +184,20 @@ def delete_order():
     pass
 
 def list_phone_orders():
-    try:
-        # Prompt for phone id
-        phone_id = int(input("Enter the phone's id: "))
-        
-        # Find phone by id
-        phone = Phone.find_by_id(phone_id)
-        
-        if phone:
-            # Get orders associated with the phone
-            orders = phone.orders()
-            
-            if orders:
-                for order in orders:
-                    print(f"<Order {order.id}: {order.phone_id}, {order.user_id}, Quantity: {order.quantity}, Status: {order.status}, Date: {order.order_date}>")
-            else:
-                print("No orders found for this phone.")
-        else:
-            print(f"Phone {phone_id} not found.")
+    phone_id = int(input("Enter Phone ID: "))
+    phone = Phone.find_by_id(phone_id)
     
-    except ValueError:
-        print("Invalid phone id. Please enter a valid integer.")
+    if phone:
+        orders = phone.orders()
+        if orders:
+            print(f"Orders for phone {phone.brand} {phone.model}:")
+            for order in orders:
+                print(order)
+        else:
+            print(f"No orders found for phone {phone.brand} {phone.model}.")
+    else:
+        print(f"Phone with ID {phone_id} not found.")
+
 def display_users():
     # Fetch all orders from the database
     user = User.get_all()
@@ -189,18 +228,31 @@ def create_user():
     except Exception as exc:
         print("Error creating user: ", exc)
         return None
+def update_user():
+    user_id = int(input("Enter User's ID: "))
+    if user := User.find_by_id(user_id):
+        try:
+            name = input("Enter the User's Name: ")
+            user._name = name
+            email = input("Enter the User's Email: ")
+            user._email = email
+            phone_number = input("Enter the User's Phone Number: ")
+            user._phone_number = phone_number
+            user.update()
 
-def delete_user():
-    id_ = input("Enter the user's id: ")
-    try:
-        user_id = int(id_)
-    except ValueError:
-        print("Invalid input. Please enter a valid user ID.")
-        return
-    
-    user = User.find_by_id(user_id)
-    if user:
-        user.delete()
-        print(f'User with id {id_} deleted')
+            print(f"User successfully updated: {user}")
+        except Exception as exc:
+            print("Error Updating User", exc)
     else:
-        print(f'User with id {id_} not found')
+        print(f"User with User ID: {user_id} not found")
+    
+
+def delete_user(): 
+    id_ = input("Enter the user's id: ")
+    if user := User.find_by_id(id_):
+        user.delete()
+        print(f'User in id{id_} deleted')
+            
+    else:
+        print(f'User in id {id_} not found')
+    pass

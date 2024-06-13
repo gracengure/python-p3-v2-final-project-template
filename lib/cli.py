@@ -5,16 +5,19 @@ from helpers import (
     display_phone_by_brand,
     display_phone_by_price,
     create_phone,
+    update_phone,
     delete_phone,
     display_orders,
     display_order_by_quantity,
     display_order_by_status,
     create_order,
+    update_order,
     delete_order,
     list_phone_orders,
     display_users,
     display_user_by_name,
     create_user,
+    update_user,
     delete_user,
 )
 
@@ -60,6 +63,7 @@ def phone_menu():
         print("2. Display phone by brand")
         print("3. Display phone by price")
         print("4. Create phone")
+        print("5. Update phone")
         print("5. Delete phone")
         print("6. Return to main menu")
         print("7. Go to Order Management")
@@ -76,12 +80,14 @@ def phone_menu():
         elif choice == "4":
             create_phone()
         elif choice == "5":
-            delete_phone()
+            update_phone()    
         elif choice == "6":
-            return "main"
+            delete_phone()
         elif choice == "7":
-            return "order"
+            return "main"
         elif choice == "8":
+            return "order"
+        elif choice == "9":
             return "user"
         else:
             print("Invalid choice. Please try again.")
@@ -93,11 +99,12 @@ def order_menu():
         print("2. Display order by quantity")
         print("3. Display order by status")
         print("4. Create order")
-        print("5. Delete order")
-        print("6. List  all orders of a phone")
-        print("7. Return to main menu")
-        print("8. Go to Phone Management")
-        print("9. Go to User Management")
+        print("5. Update order")
+        print("6. Delete order")
+        print("7. List  all orders of a phone")
+        print("8. Return to main menu")
+        print("9. Go to Phone Management")
+        print("10. Go to User Management")
         
         choice = input("Enter your choice: ")
 
@@ -109,15 +116,19 @@ def order_menu():
             display_order_by_status()
         elif choice == "4":
             create_order()
+            
         elif choice == "5":
-            delete_order()
+            update_order()   
+
         elif choice == "6":
-            list_phone_orders()    
+            delete_order()
         elif choice == "7":
-            return "main"
+            list_phone_orders()    
         elif choice == "8":
-            return "phone"
+            return "main"
         elif choice == "9":
+            return "phone"
+        elif choice == "10":
             return "user"
         else:
             print("Invalid choice. Please try again.")
@@ -128,10 +139,11 @@ def user_menu():
         print("1. Display all users")
         print("2. Display user by name")
         print("3. Create user")
-        print("4. Delete user")
-        print("5. Return to main menu")
-        print("6. Go to Phone Management")
-        print("7. Go to Order Management")
+        print("4. Update user")
+        print("5. Delete user")
+        print("6. Return to main menu")
+        print("7. Go to Phone Management")
+        print("8. Go to Order Management")
         
         choice = input("Enter your choice: ")
 
@@ -142,12 +154,14 @@ def user_menu():
         elif choice == "3":
             create_user()
         elif choice == "4":
-            delete_user()
+            update_user()
         elif choice == "5":
-            return "main"
+            delete_user()
         elif choice == "6":
-            return "phone"
+            return "main"
         elif choice == "7":
+            return "phone"
+        elif choice == "8":
             return "order"
         else:
             print("Invalid choice. Please try again.")
