@@ -2,7 +2,7 @@ from models.__init__ import CURSOR, CONN
 
 class Phone:
 
-    # Dictionary of objects saved to the database.
+    # Dictionary to keep track of all Phone instances created.
     all = {}
 
     def __init__(self, brand, model, price, stock, id=None):
@@ -13,7 +13,7 @@ class Phone:
         self.stock = stock
 
     def __repr__(self):
-        return  f"<Phone {self.id}: Brand='{self.brand}', Model='{self.model}',Price={self.price}, Stock={self.stock}>"
+        return  f"<Phone {self.id}: Brand='{self.brand}', Model='{self.model}', Price={self.price}, Stock={self.stock}>"
 
     @property
     def brand(self):
@@ -21,6 +21,7 @@ class Phone:
 
     @brand.setter
     def brand(self, brand):
+        # Ensure brand is a non-empty string
         if isinstance(brand, str) and len(brand):
             self._brand = brand
         else:
@@ -32,6 +33,7 @@ class Phone:
 
     @model.setter
     def model(self, model):
+        # Ensure model is a non-empty string
         if isinstance(model, str) and len(model):
             self._model = model
         else:
@@ -43,6 +45,7 @@ class Phone:
 
     @price.setter
     def price(self, price):
+        # Ensure price is a non-negative number
         if isinstance(price, (int, float)) and price >= 0:
             self._price = price
         else:
@@ -54,6 +57,7 @@ class Phone:
 
     @stock.setter
     def stock(self, stock):
+        # Ensure stock is a non-negative integer
         if isinstance(stock, int) and stock >= 0:
             self._stock = stock
         else:
@@ -84,12 +88,11 @@ class Phone:
         CONN.commit()
 
     def save(self):
-        
+        """Insert a new row with the phone details into the phones table"""
         sql = """
             INSERT INTO phones (brand, model, price, stock)
             VALUES (?, ?, ?, ?)
         """
-
         CURSOR.execute(sql, (self.brand, self.model, self.price, self.stock))
         CONN.commit()
 
@@ -97,7 +100,7 @@ class Phone:
         type(self).all[self.id] = self
 
     def update(self):
-        """Update the table row corresponding to the current Phone instance."""
+        """Update the table row corresponding to the current Phone instance"""
         sql = """
             UPDATE phones
             SET brand = ?, model = ?, price = ?, stock = ?
@@ -113,7 +116,6 @@ class Phone:
             DELETE FROM phones
             WHERE id = ?
         """
-
         CURSOR.execute(sql, (self.id,))
         CONN.commit()
 
@@ -150,7 +152,7 @@ class Phone:
 
     @classmethod
     def get_all(cls):
-        """Return a list containing one Order object per table row"""
+        """Return a list containing one Phone object per table row"""
         sql = """
             SELECT *
             FROM phones
@@ -158,16 +160,14 @@ class Phone:
         rows = CURSOR.execute(sql).fetchall()
         return [cls.instance_from_db(row) for row in rows]
 
-
     @classmethod
     def find_by_price(cls, price):
-        """Return a Phone object corresponding to the table row matching the specified primary key"""
+        """Return a list of Phone objects corresponding to all table rows matching the specified price"""
         sql = """
             SELECT *
             FROM phones
             WHERE price = ?
         """
-
         rows = CURSOR.execute(sql, (price,)).fetchall()
         return [cls.instance_from_db(row) for row in rows]
 
@@ -179,13 +179,12 @@ class Phone:
             FROM phones
             WHERE brand = ?
         """
-
-
         rows = CURSOR.execute(sql, (brand,)).fetchall()
         return [cls.instance_from_db(row) for row in rows]
+
     @classmethod
     def find_by_id(cls, id):
-        """Return an Phone3 object corresponding to the table row matching the specified primary key"""
+        """Return a Phone object corresponding to the table row matching the specified primary key"""
         sql = """
             SELECT *
             FROM phones
@@ -193,6 +192,7 @@ class Phone:
         """
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
+
     def orders(self):
         """Return list of orders associated with the current phone"""
         from models.order import Order
@@ -200,7 +200,7 @@ class Phone:
             SELECT * FROM orders
             WHERE phone_id = ?
         """
-        CURSOR.execute(sql, (self.id,),)
+        CURSOR.execute(sql, (self.id,))
 
         rows = CURSOR.fetchall()
         return [Order.instance_from_db(row) for row in rows]

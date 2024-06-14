@@ -235,7 +235,7 @@ def display_user_by_name():
     name = input("Enter the user's name: ")
     user =User.find_by_name(name)
     print(user) if user else print(
-        f' Phone {user} not found')
+        f'  {user} not found')
     pass
 
 

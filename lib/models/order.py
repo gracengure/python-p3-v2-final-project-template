@@ -1,8 +1,8 @@
 from models.__init__ import CURSOR, CONN
 from models.phone import Phone
 from models.user import User
-class Order:
 
+class Order:
     # Dictionary of objects saved to the database.
     all = {}
 
@@ -72,8 +72,6 @@ class Order:
         else:
             raise ValueError("user_id must reference a user in the database")
 
-    
-
     @classmethod
     def create_table(cls):
         """Create a new table to persist the attributes of Order instances"""
@@ -117,7 +115,7 @@ class Order:
         """Update the table row corresponding to the current Order instance"""
         sql = """
             UPDATE orders
-            SET phone_id = ?, quant8ity = ?, order_date = ?, status = ?, user_id = ?
+            SET phone_id = ?, quantity = ?, order_date = ?, status = ?, user_id = ?
             WHERE id = ?
         """
         CURSOR.execute(sql, (self.phone_id, self.quantity, self.order_date, self.status, self.user_id, self.id))
@@ -171,7 +169,6 @@ class Order:
         rows = CURSOR.execute(sql).fetchall()
         return [cls.instance_from_db(row) for row in rows]
 
-    
     @classmethod
     def find_by_quantity(cls, quantity):
         """Return a list of Order objects corresponding to all table rows matching the specified quantity"""
@@ -182,6 +179,7 @@ class Order:
         """
         rows = CURSOR.execute(sql, (quantity,)).fetchall()
         return [cls.instance_from_db(row) for row in rows]
+
     @classmethod
     def find_by_status(cls, status):
         """Return a list of Order objects corresponding to all table rows matching the specified quantity"""
@@ -192,9 +190,10 @@ class Order:
         """
         rows = CURSOR.execute(sql, (status,)).fetchall()
         return [cls.instance_from_db(row) for row in rows]
+
     @classmethod
     def find_by_id(cls, id):
-        """Return an Phone3 object corresponding to the table row matching the specified primary key"""
+        """Return an Order object corresponding to the table row matching the specified primary key"""
         sql = """
             SELECT *
             FROM orders
@@ -202,11 +201,13 @@ class Order:
         """
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
+
     def user(self):
         """Return the user associated with this order"""
         from models.user import User  # Assuming User class exists
         return User.find_by_id(self.user_id)
+
     def phone(self):
-        """Return the user associated with this order"""
-        from models.phone import Phone  # Assuming User class exists
+        """Return the phone associated with this order"""
+        from models.phone import Phone  # Assuming Phone class exists
         return Phone.find_by_id(self.phone_id)
