@@ -50,11 +50,11 @@ Welcome to the Phone Inventory Management System (PIMS)! This system provides a 
 
 1.To run this project locally, follow these steps:
 
-    Clone the repository:
-git clone <repository-url>
+    Clone the repository: git clone <repository-url>
+
  
-Run the CLI by executing lib/cli.py:
-python lib/cli.py
+    Run the CLI by executing lib/cli.py:python lib/cli.py
+
 
 ### Installation Requirements
 
@@ -69,7 +69,7 @@ python lib/cli.py
 
 The Phone Inventory Management System (PIMS) offers a user-friendly command-line interface (CLI) designed to streamline the management of phones, orders, and users. Navigate through menus to perform various tasks and manage your inventory efficiently.
 
-###License
+### License
 
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
