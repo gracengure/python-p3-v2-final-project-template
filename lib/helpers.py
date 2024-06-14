@@ -1,37 +1,35 @@
-# lib/helpers.py
 from models.phone import Phone
 from models.order import Order
 from models.user import User
 
+# Helper function for some useful operation
 def helper_1():
     print("Performing useful function#1.")
 
-
+# Function to exit the program
 def exit_program():
     print("Thank you for using the Phone Inventory Management System (PIMS). Have a great day!")
-       
     exit()
+
+# Function to display all phones from the database
 def display_phones():
-    # Fetch all phones from the database
     phones = Phone.get_all()
     for phone in phones:
         print(phone)
 
-    pass
+# Function to display phone by brand
 def display_phone_by_brand():
     brand = input("Enter the phone's brand: ")
-    phone =Phone.find_by_brand(brand)
-    print(phone) if phone else print(
-        f' Phone {brand} not found')
-    pass
+    phone = Phone.find_by_brand(brand)
+    print(phone) if phone else print(f'Phone {brand} not found')
 
+# Function to display phone by price
 def display_phone_by_price():
-     #use a trailing underscore not to override the built-in id function
     price = input("Enter the phone's price: ")
     phone = Phone.find_by_price(price)
-    print(phone) if phone else print(f'Phone {price} not found')
-    pass
+    print(phone) if phone else print(f'Phone with price {price} not found')
 
+# Function to create a new phone and save it to the database
 def create_phone():
     brand = input("Enter the phone's brand: ")
     model = input("Enter the phone's model: ")
@@ -59,6 +57,8 @@ def create_phone():
         print(f'Success: Phone {phone.brand} {phone.model} added with price {phone.price} and stock {phone.stock}')
     except Exception as exc:
         print("Error creating phone:", exc)
+
+# Function to update an existing phone
 def update_phone():
     id_ = int(input("Enter Phone's ID: "))
     if phone := Phone.find_by_id(id_):
@@ -81,39 +81,34 @@ def update_phone():
     else:
         print(f"Phone with Phone ID: {id_} not found")
 
-
+# Function to delete a phone by ID
 def delete_phone(): 
     id_ = input("Enter the phone's id: ")
     if phone := Phone.find_by_id(id_):
         phone.delete()
-        print(f'Phone in id{id_} deleted')
-            
+        print(f'Phone with id {id_} deleted')
     else:
-        print(f'Phone in id {id_} not found')
-    pass
+        print(f'Phone with id {id_} not found')
 
-
+# Function to display all orders from the database
 def display_orders():
-    # Fetch all orders from the database
-    order = Order.get_all()
-    for order in order:
+    orders = Order.get_all()
+    for order in orders:
         print(order)
 
-    pass
+# Function to display order by quantity
 def display_order_by_quantity():
     quantity = input("Enter the order's quantity: ")
-    order =Order.find_by_quantity(quantity)
-    print(order) if order else print(
-        f' Phone {order} not found')
-    pass
+    order = Order.find_by_quantity(quantity)
+    print(order) if order else print(f'Order with quantity {quantity} not found')
 
+# Function to display order by status
 def display_order_by_status():
-     #use a trailing underscore not to override the built-in id function
-    status = input("Enter the order's  status: ")
+    status = input("Enter the order's status: ")
     order = Order.find_by_status(status)
-    print(order) if order else print(f'Phone {order} not found')
-    pass
+    print(order) if order else print(f'Order with status {status} not found')
 
+# Function to create a new order and save it to the database
 def create_order():
     try:
         phone_id = int(input("Enter the phone's ID: "))
@@ -146,11 +141,12 @@ def create_order():
 
     try:
         # phone_id, quantity, order_date, status, user_id
-        order = Order.create(phone_id,  quantity,  order_date, status, user_id)
+        order = Order.create(phone_id, quantity, order_date, status, user_id)
         print(f'Success: Order {order}')
     except Exception as exc:
-        print("Error creating order: ", exc)
+        print("Error creating order:", exc)
 
+# Function to update an existing order
 def update_order():
     id_ = int(input("Enter Order's ID: "))
     if order := Order.find_by_id(id_):
@@ -173,19 +169,18 @@ def update_order():
     else:
         print(f"Order with Order ID: {id_} not found")
 
-
+# Function to delete an order by ID
 def delete_order(): 
     id_ = input("Enter the order's id: ")
     if order := Order.find_by_id(id_):
         order.delete()
-        print(f'Order in id{id_} deleted')
+        print(f'Order with id {id_} deleted')
     else:
-        print(f'Order in id {id_} not found')
-    pass
+        print(f'Order with id {id_} not found')
 
+# Function to list orders associated with a specific phone
 def list_phone_orders():
     phone_id = int(input("Enter Phone ID: "))
-    
     phone = Phone.find_by_id(phone_id)
     
     if phone:
@@ -203,9 +198,11 @@ def list_phone_orders():
             print(f"No orders found for phone {phone.brand} {phone.model}.")
     else:
         print(f"Phone with ID {phone_id} not found.")
+
+# Function to list orders associated with a specific user
 def list_user_orders():
     user_id = int(input("Enter User ID: "))
-    user= User.find_by_id(user_id)
+    user = User.find_by_id(user_id)
     
     if user:
         orders = user.orders()
@@ -223,22 +220,19 @@ def list_user_orders():
     else:
         print(f"User with ID {user_id} not found.")
 
-
+# Function to display all users from the database
 def display_users():
-    # Fetch all orders from the database
-    user = User.get_all()
-    for user in user:
+    users = User.get_all()
+    for user in users:
         print(user)
 
-    pass
+# Function to display user by name
 def display_user_by_name():
     name = input("Enter the user's name: ")
-    user =User.find_by_name(name)
-    print(user) if user else print(
-        f'  {user} not found')
-    pass
+    user = User.find_by_name(name)
+    print(user) if user else print(f'User with name {name} not found')
 
-
+# Function to create a new user and save it to the database
 def create_user():
     try:
         name = input("Enter the user's name: ")
@@ -252,18 +246,20 @@ def create_user():
         print(f'Success: User created with ID {user_id}')
         return user_id
     except Exception as exc:
-        print("Error creating user: ", exc)
+        print("Error creating user:", exc)
         return None
+
+# Function to update an existing user
 def update_user():
     user_id = int(input("Enter User's ID: "))
     if user := User.find_by_id(user_id):
         try:
             name = input("Enter the User's Name: ")
-            user._name = name
+            user.name = name
             email = input("Enter the User's Email: ")
-            user._email = email
+            user.email = email
             phone_number = input("Enter the User's Phone Number: ")
-            user._phone_number = phone_number
+            user.phone_number = phone_number
             user.update()
 
             print(f"User successfully updated: {user}")
@@ -271,14 +267,12 @@ def update_user():
             print("Error Updating User", exc)
     else:
         print(f"User with User ID: {user_id} not found")
-    
 
+# Function to delete a user by ID
 def delete_user(): 
     id_ = input("Enter the user's id: ")
     if user := User.find_by_id(id_):
         user.delete()
-        print(f'User in id{id_} deleted')
-            
+        print(f'User with id {id_} deleted')
     else:
-        print(f'User in id {id_} not found')
-    pass
+        print(f'User with id {id_} not found')
